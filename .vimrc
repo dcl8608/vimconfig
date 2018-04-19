@@ -15,8 +15,25 @@ set cindent
 set cinoptions={0,1s,t0,n-2,p2s,(03s,=.5s,>1s,=1s,:1s
 set expandtab
 
-map ,v ggO-- Copyright(c) 2016 Awifi .<CR>-- Authored by HONGLIANG ZOU on:<Esc>:read !date <CR>kJ$a<CR>-- @desc:<CR>-- @history<CR><Esc>
-map ,m O-- Authored by HONGLIANG ZOU on:<Esc>:read !date <CR>kJ$a<CR>-- Funcion goal:<CR>-- Modified by:<CR>-- Input arguments:<CR>-- OutPut arguments:<CR><Esc>
+map ,r ggO#!/bin/ruby<CR><Esc>
+map ,b ggO#!/bin/bash<CR><Esc>
+map ,, A,<Esc>
+map ,; A;<Esc>
+inoremap ( ()<Esc>i 
+inoremap [ []<Esc>i
+inoremap { {}<Esc>i
+inoremap " ""<Esc>i
+inoremap ,, <Esc>la
+
+" -------- ruby 版本 -------- "
+" 映射版权输入"
+map ,vr ggo## Copyright(c) Awifi .<CR>## Authored by HONGLIANG ZOU on:<Esc>:read !date <CR>kJ$a<CR>## @desc:<CR>## @history<CR><Esc>
+" 映射函数或对象声明"
+map ,fr O## Authored by HONGLIANG ZOU on:<Esc>:read !date <CR>kJ$a<CR>## Funcion goal:<CR>## Input arguments:<CR>## OutPut arguments:<CR><Esc>
+map ,mr O## Modified by HONGLIANG ZOU on:<Esc>:read !date <CR>kJ$a<CR><Esc>
+" 映射插入分割线 "
+map ,-r O## ------------------------- 此处为分割线 ------------------------<CR><Esc>
+
 
 set diffexpr=MyDiff()
 function MyDiff()
