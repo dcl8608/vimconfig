@@ -1,0 +1,154 @@
+set nocompatible
+set nu
+
+if filereadable(expand("~/.vimrc.bundles"))
+  source ~/.vimrc.bundles
+endif
+" Switch syntax highlighting on, when the terminal has colors
+
+" Javascript syntax hightlight
+syntax enable
+call pathogen#infect()
+
+" Set syntax highlighting for specific file types
+autocmd BufRead,BufNewFile Appraisals set filetype=ruby
+autocmd BufRead,BufNewFile *.md set filetype=markdown
+autocmd Syntax javascript set syntax=jquery
+
+" Color scheme
+colorscheme molokai 
+highlight NonText guibg=#060606
+highlight Folded  guibg=#0A0A0A guifg=#9090D0
+
+" NERD tree
+let NERDChristmasTree=0
+let NERDTreeWinSize=25
+let NERDTreeChDirMode=2
+let NERDTreeIgnore=['\~$', '\.pyc$', '\.swp$']
+let NERDTreeShowBookmarks=1
+let NERDTreeWinPos="left"
+" Automatically open a NERDTree if no files where specified
+" "autocmd vimenter * NERDTree
+autocmd StdinReadPre * let s:std_in=1
+" "autocmd vimenter * if !argc() | NERDTree | endif
+" Close vim if the only window left open is a NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+" Open a NERDTree
+nmap <F5> :NERDTreeToggle<cr>
+
+" Tagbar
+let g:tagbar_width=25
+let g:tagbar_autofocus=1
+nmap <F6> :TagbarToggle<CR>
+
+"ctrlp
+"<Leader>p搜索当前目录下文件
+let g:ctrlp_map = '<Leader>p'
+let g:ctrlp_cmd = 'CtrlP'
+"<Leader>f搜索MRU文件
+nmap <Leader>f :CtrlPMRUFiles<CR>
+"<Leader>b显示缓冲区文件，并可通过序号进行跳转
+nmap <Leader>b :CtrlPBuffer<CR>
+"设置搜索时忽略的文件
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
+    \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc)$',
+    \ }
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_match_window_bottom = 1
+"修改QuickFix窗口显示的最大条目数
+let g:ctrlp_max_height = 10
+let g:ctrlp_match_window_reversed = 0
+"设置MRU最大条目数为500
+let g:ctrlp_mruf_max = 500
+let g:ctrlp_follow_symlinks = 1
+"默认使用全路径搜索，置1后按文件名搜索，准确率会有所提高，可以用<C-d>进行切换
+let g:ctrlp_by_filename = 1
+"默认不使用正则表达式，置1改为默认使用正则表达式，可以用<C-r>进行切换
+let g:ctrlp_regexp = 0
+"自定义搜索列表的提示符
+let g:ctrlp_line_prefix = '♪ '
+if executable('ag')
+  " Use Ag over Grep
+  set grepprg=ag\ --nogroup\ --nocolor
+  " Use ag in CtrlP for listing files.
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  " Ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
+" 状态栏 
+set laststatus=2 " Always display the status line
+""set statusline+=%{fugitive#statusline()} "  Git Hotness
+"powerline
+set guifont=PowerlineSymbols\ for\ Powerline
+set nocompatible
+set t_Co=256
+let g:Powerline_symbols = 'fancy'
+
+set guifont=courier_new:h16
+let &termencoding=&encoding
+set fileencodings=utf-8,gbk,ucs-bom,cp936
+source $VIMRUNTIME/vimrc_example.vim
+source $VIMRUNTIME/mswin.vim
+behave mswin
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set autoindent
+set cindent
+set cinoptions={0,1s,t0,n-2,p2s,(03s,=.5s,>1s,=1s,:1s
+set expandtab
+
+
+au WinLeave * set nocursorline nocursorcolumn
+au WinEnter * set cursorline cursorcolumn
+set cursorline cursorcolumn
+
+map ,r ggO#!/bin/ruby<CR><Esc>
+map ,b ggO#!/bin/bash<CR><Esc>
+map ,, A,<Esc>
+map ,; A;<Esc>
+map ,# ^i#<Esc>
+
+inoremap ( ()<Esc>i 
+inoremap [ []<Esc>i
+inoremap { {}<Esc>i
+inoremap " ""<Esc>i
+inoremap ,, <Esc>la
+
+" -------- ruby 版本 -------- "
+" 映射版权输入"
+map ,vr ggo## Copyright(c) Awifi .<CR>## Authored by HONGLIANG ZOU on:<Esc>:read !date <CR>kJ$a<CR>## @desc:<CR>## @history<CR><Esc>
+" 映射函数或对象声明"
+map ,fr O## Authored by HONGLIANG ZOU on:<Esc>:read !date <CR>kJ$a<CR>## Funcion goal:<CR>## Input arguments:<CR>## OutPut arguments:<CR><Esc>
+map ,mr O## Modified by HONGLIANG ZOU on:<Esc>:read !date <CR>kJ$a<CR><Esc>
+" 映射插入分割线 "
+map ,-r O## ------------------------- 此处为分割线 ------------------------<CR><Esc>
+
+
+set diffexpr=MyDiff()
+function MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  let eq = ''
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      let cmd = '""' . $VIMRUNTIME . '\diff"'
+      let eq = '"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
+  endif
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+endfunction
+execute pathogen#infect()
+call pathogen#helptags()
