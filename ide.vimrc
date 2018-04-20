@@ -1,5 +1,6 @@
 set nocompatible
 set nu
+:filetype plugin on
 
 if filereadable(expand("~/.vimrc.bundles"))
   source ~/.vimrc.bundles
@@ -8,7 +9,7 @@ endif
 
 " Javascript syntax hightlight
 syntax enable
-call pathogen#infect()
+""call pathogen#infect()
 
 " Set syntax highlighting for specific file types
 autocmd BufRead,BufNewFile Appraisals set filetype=ruby
